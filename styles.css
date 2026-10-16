@@ -1,333 +1,78 @@
 /* =========================================================
    任务清单 —— 样式
-   通过 CSS 变量实现浅色 / 深色主题，不依赖任何外部资源
+   通过 CSS 变量实现浅色 / 深色主题，不依赖任何外部资源。
    ========================================================= */
 
 :root {
   color-scheme: light dark;
 
-  --bg: #eef1f8;
+  --bg: #f4f5f7;
   --surface: #ffffff;
-  --surface-soft: #f6f7fb;
-  --text: #1c2333;
+  --surface-soft: #f8f9fb;
+  --border: #e3e6ec;
+  --border-strong: #cfd4de;
+  --text: #1c1f26;
   --text-muted: #6b7280;
-  --border: #e3e7ef;
-  --border-strong: #c6cddd;
-  --primary: #4f46e5;
-  --primary-hover: #4338ca;
-  --on-primary: #ffffff;
-  --danger: #dc2626;
-  --danger-soft: #fef2f2;
-  --success: #16a34a;
-  --ring: rgba(79, 70, 229, 0.28);
-  --ring-danger: rgba(220, 38, 38, 0.25);
+  --text-faint: #9aa2af;
+  --accent: #3b5bdb;
+  --accent-hover: #2f4bc4;
+  --accent-soft: #eaeefb;
+  --danger: #c2334a;
+  --danger-hover: #a92b40;
+  --danger-soft: #fbeaed;
+  --on-danger: #ffffff;
+  --success: #2f8f5b;
+  --focus-ring: rgba(59, 91, 219, 0.35);
   --radius-lg: 16px;
   --radius-md: 10px;
-  --shadow-card: 0 18px 45px -20px rgba(28, 35, 51, 0.4);
-  --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-    "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  --radius-sm: 8px;
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-md: 0 4px 16px rgba(16, 24, 40, 0.08);
+  --ease: cubic-bezier(0.2, 0, 0.2, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0f1219;
-    --surface: #191e2b;
-    --surface-soft: #222939;
-    --text: #e8ebf4;
-    --text-muted: #98a1b3;
-    --border: #2b3346;
-    --border-strong: #46506a;
-    --primary: #5850ec;
-    --primary-hover: #6a63f0;
-    --on-primary: #ffffff;
-    --danger: #f87171;
-    --danger-soft: #3b2229;
-    --success: #22c55e;
-    --ring: rgba(88, 80, 236, 0.4);
-    --ring-danger: rgba(248, 113, 113, 0.3);
-    --shadow-card: 0 18px 45px -20px rgba(0, 0, 0, 0.9);
+    --bg: #14161a;
+    --surface: #1d2026;
+    --surface-soft: #23272e;
+    --border: #2f343d;
+    --border-strong: #3d434e;
+    --text: #eceef2;
+    --text-muted: #9aa2af;
+    --text-faint: #6b7280;
+    --accent: #7b96f5;
+    --accent-hover: #93aaf8;
+    --accent-soft: #262d43;
+    --danger: #f0808f;
+    --danger-hover: #f5a2ad;
+    --danger-soft: #3a2429;
+    --on-danger: #2a1116;
+    --success: #6dd39a;
+    --focus-ring: rgba(123, 150, 245, 0.4);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
   }
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
-}
-
-[hidden] {
-  display: none !important;
 }
 
 body {
   margin: 0;
+  padding: 40px 20px 64px;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: clamp(24px, 7vh, 72px) 16px 40px;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-stack);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", Roboto, Helvetica, Arial, sans-serif;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
-
-:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-}
-
-/* ---------- 卡片 ---------- */
-
-.app {
-  width: 100%;
-  max-width: 640px;
-  padding: clamp(20px, 4.5vw, 32px);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-}
-
-/* ---------- 标题区 ---------- */
-
-.app-header {
-  margin-bottom: 22px;
-}
-
-.app-header h1 {
-  margin: 0;
-  font-size: 1.45rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-}
-
-.summary {
-  margin: 6px 0 0;
-  font-size: 0.92rem;
-  color: var(--text-muted);
-}
-
-/* ---------- 添加表单 ---------- */
-
-.task-form {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 18px;
-}
-
-.task-input {
-  flex: 1;
-  min-width: 0;
-  padding: 12px 14px;
-  font: inherit;
-  color: var(--text);
-  background: var(--surface-soft);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
-}
-
-.task-input::placeholder {
-  color: var(--text-muted);
-}
-
-.task-input:focus {
-  outline: none;
-  background: var(--surface);
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--ring);
-}
-
-.task-input.input-error {
-  border-color: var(--danger);
-  box-shadow: 0 0 0 3px var(--ring-danger);
-  animation: shake 0.3s ease;
-}
-
-.btn-add {
-  flex: none;
-  padding: 12px 24px;
-  font: inherit;
-  font-weight: 600;
-  color: var(--on-primary);
-  background: var(--primary);
-  border: none;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: background-color 0.15s ease, transform 0.1s ease;
-}
-
-.btn-add:hover {
-  background: var(--primary-hover);
-}
-
-.btn-add:active {
-  transform: scale(0.97);
-}
-
-/* ---------- 筛选 ---------- */
-
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.filter-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  font: inherit;
-  font-size: 0.88rem;
-  color: var(--text-muted);
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  cursor: pointer;
-  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
-}
-
-.filter-btn:hover {
-  color: var(--text);
-  border-color: var(--border-strong);
-  background: var(--surface-soft);
-}
-
-.filter-btn.active {
-  color: var(--on-primary);
-  background: var(--primary);
-  border-color: var(--primary);
-}
-
-.filter-btn .count {
-  min-width: 1.5em;
-  padding: 0 6px;
-  font-size: 0.74rem;
-  line-height: 1.6;
-  text-align: center;
-  color: var(--text-muted);
-  background: var(--surface-soft);
-  border-radius: 999px;
-}
-
-.filter-btn.active .count {
-  color: var(--on-primary);
-  background: rgba(255, 255, 255, 0.22);
-}
-
-/* ---------- 任务列表 ---------- */
-
-.task-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.task-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 8px;
-  transition: opacity 0.15s ease, transform 0.15s ease;
-}
-
-.task-item:not(:last-child) {
-  border-bottom: 1px solid var(--border);
-}
-
-.task-item.task-enter {
-  animation: task-in 0.2s ease;
-}
-
-.task-item.removing {
-  opacity: 0;
-  transform: translateX(16px);
-}
-
-/* 圆形复选框 */
-.task-toggle {
-  appearance: none;
-  -webkit-appearance: none;
-  flex: none;
-  position: relative;
-  width: 22px;
-  height: 22px;
-  margin: 0;
-  border: 2px solid var(--border-strong);
-  border-radius: 50%;
-  background: transparent;
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.task-toggle:hover {
-  border-color: var(--success);
-}
-
-.task-toggle:checked {
-  background: var(--success);
-  border-color: var(--success);
-}
-
-.task-toggle:checked::after {
-  content: "";
-  position: absolute;
-  left: 5px;
-  top: 2px;
-  width: 5px;
-  height: 10px;
-  border: solid #ffffff;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-.task-text {
-  flex: 1;
-  min-width: 0;
-  overflow-wrap: anywhere;
-  transition: color 0.15s ease;
-}
-
-.task-item.completed .task-text {
-  color: var(--text-muted);
-  text-decoration: line-through;
-}
-
-.task-delete {
-  flex: none;
-  padding: 6px 10px;
-  font: inherit;
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.task-delete:hover {
-  color: var(--danger);
-  background: var(--danger-soft);
-  border-color: var(--danger);
-}
-
-/* ---------- 空状态 ---------- */
-
-.empty-state {
-  margin: 18px 0 4px;
-  padding: 26px 12px;
-  text-align: center;
-  color: var(--text-muted);
-  background: var(--surface-soft);
-  border: 1px dashed var(--border-strong);
-  border-radius: var(--radius-md);
-}
-
-/* ---------- 辅助 ---------- */
 
 .visually-hidden {
   position: absolute;
@@ -342,28 +87,425 @@ body {
   border: 0;
 }
 
-/* ---------- 动画 ---------- */
+.app {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* ---------- Header ---------- */
+
+.app__header {
+  margin-bottom: 24px;
+}
+
+.app__title {
+  margin: 0 0 6px;
+  font-size: 28px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.app__subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* ---------- Composer ---------- */
+
+.composer {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+
+.composer:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.composer.is-invalid {
+  border-color: var(--danger);
+}
+
+.composer.is-invalid:focus-within {
+  box-shadow: 0 0 0 3px rgba(194, 51, 74, 0.25);
+}
+
+.composer__input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  outline: none;
+}
+
+.composer__input::placeholder {
+  color: var(--text-faint);
+}
+
+.composer__submit {
+  flex: none;
+  padding: 10px 20px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 550;
+  cursor: pointer;
+  transition: background-color 0.15s var(--ease), transform 0.08s var(--ease);
+}
+
+.composer__submit:hover {
+  background: var(--accent-hover);
+}
+
+.composer__submit:active {
+  transform: scale(0.97);
+}
+
+.composer__submit:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.composer__error {
+  margin: 8px 4px 0;
+  font-size: 13px;
+  color: var(--danger);
+}
+
+.composer__error[hidden] {
+  display: none;
+}
+
+/* ---------- Toolbar ---------- */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 20px 0 12px;
+}
+
+.filters {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.filters__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.filters__btn:hover {
+  color: var(--text);
+  background: rgba(128, 138, 158, 0.12);
+}
+
+.filters__btn.is-active {
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 550;
+  box-shadow: var(--shadow-sm);
+}
+
+.filters__btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.filters__count {
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: rgba(128, 138, 158, 0.18);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  line-height: 18px;
+  text-align: center;
+}
+
+.filters__btn.is-active .filters__count {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.toolbar__clear {
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.toolbar__clear:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.toolbar__clear:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.toolbar__clear[hidden] {
+  display: none;
+}
+
+/* ---------- Task list ---------- */
+
+.task-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+
+.task--enter {
+  animation: task-in 0.18s var(--ease);
+}
+
+.task:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+}
 
 @keyframes task-in {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
-@keyframes shake {
-  10%, 90% { transform: translateX(-2px); }
-  20%, 80% { transform: translateX(3px); }
-  30%, 50%, 70% { transform: translateX(-4px); }
-  40%, 60% { transform: translateX(4px); }
+@media (prefers-reduced-motion: reduce) {
+  .task--enter {
+    animation: none;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+  }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+.task__toggle {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 1px 0 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.task__toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.task__text {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  transition: color 0.15s var(--ease);
+}
+
+.task.is-done .task__text {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.task__delete {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-faint);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.task__delete:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.task__delete:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* ---------- Empty state ---------- */
+
+.empty-state {
+  margin: 32px 0 0;
+  padding: 32px 16px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+.empty-state[hidden] {
+  display: none;
+}
+
+/* ---------- Confirmation dialog ---------- */
+
+.confirm {
+  width: min(360px, calc(100vw - 32px));
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-md);
+}
+
+.confirm::backdrop {
+  background: rgba(16, 24, 40, 0.45);
+}
+
+.confirm__form {
+  margin: 0;
+  padding: 20px;
+}
+
+.confirm__title {
+  margin: 0 0 8px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.confirm__text {
+  margin: 0 0 18px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.confirm__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.confirm__btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.15s var(--ease), border-color 0.15s var(--ease);
+}
+
+.confirm__btn:hover {
+  background: var(--surface-soft);
+}
+
+.confirm__btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.confirm__btn--danger {
+  border-color: transparent;
+  background: var(--danger);
+  color: var(--on-danger);
+  font-weight: 550;
+}
+
+.confirm__btn--danger:hover {
+  background: var(--danger-hover);
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 480px) {
+  body {
+    padding: 24px 12px 48px;
+  }
+
+  .app__title {
+    font-size: 24px;
+  }
+
+  .composer {
+    flex-direction: column;
+  }
+
+  .composer__submit {
+    width: 100%;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters {
+    justify-content: space-between;
+  }
+
+  .filters__btn {
+    flex: 1;
+    justify-content: center;
   }
 }
