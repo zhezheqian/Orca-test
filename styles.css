@@ -1,0 +1,369 @@
+/* =========================================================
+   任务清单 —— 样式
+   通过 CSS 变量实现浅色 / 深色主题，不依赖任何外部资源
+   ========================================================= */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #eef1f8;
+  --surface: #ffffff;
+  --surface-soft: #f6f7fb;
+  --text: #1c2333;
+  --text-muted: #6b7280;
+  --border: #e3e7ef;
+  --border-strong: #c6cddd;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --on-primary: #ffffff;
+  --danger: #dc2626;
+  --danger-soft: #fef2f2;
+  --success: #16a34a;
+  --ring: rgba(79, 70, 229, 0.28);
+  --ring-danger: rgba(220, 38, 38, 0.25);
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --shadow-card: 0 18px 45px -20px rgba(28, 35, 51, 0.4);
+  --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1219;
+    --surface: #191e2b;
+    --surface-soft: #222939;
+    --text: #e8ebf4;
+    --text-muted: #98a1b3;
+    --border: #2b3346;
+    --border-strong: #46506a;
+    --primary: #5850ec;
+    --primary-hover: #6a63f0;
+    --on-primary: #ffffff;
+    --danger: #f87171;
+    --danger-soft: #3b2229;
+    --success: #22c55e;
+    --ring: rgba(88, 80, 236, 0.4);
+    --ring-danger: rgba(248, 113, 113, 0.3);
+    --shadow-card: 0 18px 45px -20px rgba(0, 0, 0, 0.9);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: clamp(24px, 7vh, 72px) 16px 40px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-stack);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ---------- 卡片 ---------- */
+
+.app {
+  width: 100%;
+  max-width: 640px;
+  padding: clamp(20px, 4.5vw, 32px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* ---------- 标题区 ---------- */
+
+.app-header {
+  margin-bottom: 22px;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.summary {
+  margin: 6px 0 0;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+/* ---------- 添加表单 ---------- */
+
+.task-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.task-input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.task-input::placeholder {
+  color: var(--text-muted);
+}
+
+.task-input:focus {
+  outline: none;
+  background: var(--surface);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+.task-input.input-error {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px var(--ring-danger);
+  animation: shake 0.3s ease;
+}
+
+.btn-add {
+  flex: none;
+  padding: 12px 24px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--on-primary);
+  background: var(--primary);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-add:hover {
+  background: var(--primary-hover);
+}
+
+.btn-add:active {
+  transform: scale(0.97);
+}
+
+/* ---------- 筛选 ---------- */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.filter-btn:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+}
+
+.filter-btn.active {
+  color: var(--on-primary);
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.filter-btn .count {
+  min-width: 1.5em;
+  padding: 0 6px;
+  font-size: 0.74rem;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--text-muted);
+  background: var(--surface-soft);
+  border-radius: 999px;
+}
+
+.filter-btn.active .count {
+  color: var(--on-primary);
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* ---------- 任务列表 ---------- */
+
+.task-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 8px;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.task-item:not(:last-child) {
+  border-bottom: 1px solid var(--border);
+}
+
+.task-item.task-enter {
+  animation: task-in 0.2s ease;
+}
+
+.task-item.removing {
+  opacity: 0;
+  transform: translateX(16px);
+}
+
+/* 圆形复选框 */
+.task-toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  position: relative;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.task-toggle:hover {
+  border-color: var(--success);
+}
+
+.task-toggle:checked {
+  background: var(--success);
+  border-color: var(--success);
+}
+
+.task-toggle:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.task-text {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  transition: color 0.15s ease;
+}
+
+.task-item.completed .task-text {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.task-delete {
+  flex: none;
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.task-delete:hover {
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-color: var(--danger);
+}
+
+/* ---------- 空状态 ---------- */
+
+.empty-state {
+  margin: 18px 0 4px;
+  padding: 26px 12px;
+  text-align: center;
+  color: var(--text-muted);
+  background: var(--surface-soft);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+}
+
+/* ---------- 辅助 ---------- */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- 动画 ---------- */
+
+@keyframes task-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(3px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

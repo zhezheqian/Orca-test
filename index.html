@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>任务清单</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <h1>任务清单</h1>
+      <p class="summary" id="summary">暂无任务，从添加第一条开始吧</p>
+    </header>
+
+    <form class="task-form" id="task-form" novalidate>
+      <label class="visually-hidden" for="task-input">任务内容</label>
+      <input
+        type="text"
+        id="task-input"
+        class="task-input"
+        placeholder="输入任务内容，按回车添加"
+        autocomplete="off"
+        maxlength="200"
+      >
+      <button type="submit" class="btn-add">添加</button>
+    </form>
+
+    <div class="filters" role="group" aria-label="筛选任务">
+      <button type="button" class="filter-btn active" data-filter="all" aria-pressed="true">
+        全部 <span class="count" data-count="all">0</span>
+      </button>
+      <button type="button" class="filter-btn" data-filter="active" aria-pressed="false">
+        未完成 <span class="count" data-count="active">0</span>
+      </button>
+      <button type="button" class="filter-btn" data-filter="completed" aria-pressed="false">
+        已完成 <span class="count" data-count="completed">0</span>
+      </button>
+    </div>
+
+    <ul class="task-list" id="task-list"></ul>
+
+    <p class="empty-state" id="empty-state" hidden>还没有任务，先添加一个吧。</p>
+  </main>
+
+  <p id="status" class="visually-hidden" role="status" aria-live="polite"></p>
+
+  <script src="app.js"></script>
+</body>
+</html>
