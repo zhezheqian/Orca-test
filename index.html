@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
   <title>任务清单</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -47,6 +48,8 @@
 
     <p class="empty-state" id="empty-state" hidden></p>
   </main>
+
+  <p id="status" class="visually-hidden" role="status" aria-live="polite"></p>
 
   <dialog class="confirm" id="clear-confirm" aria-labelledby="clear-confirm-title">
     <form method="dialog" class="confirm__form">

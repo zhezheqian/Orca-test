@@ -10,6 +10,7 @@
     list: document.getElementById('task-list'),
     empty: document.getElementById('empty-state'),
     summary: document.getElementById('summary-line'),
+    status: document.getElementById('status'),
     clearCompleted: document.getElementById('clear-completed'),
     confirm: document.getElementById('clear-confirm'),
     confirmText: document.getElementById('clear-confirm-text'),
@@ -59,7 +60,21 @@
     try {
       var parsed = JSON.parse(raw);
       if (Array.isArray(parsed)) {
-        state.tasks = parsed.map(normalizeTask).filter(Boolean);
+        // Ids have to stay unique: rows are addressed by id, so a duplicate
+        // would make toggling or deleting one row act on another.
+        var seenIds = Object.create(null);
+        state.tasks = [];
+        parsed.forEach(function (item) {
+          var task = normalizeTask(item);
+          if (!task) {
+            return;
+          }
+          if (seenIds[task.id]) {
+            task.id = createId();
+          }
+          seenIds[task.id] = true;
+          state.tasks.push(task);
+        });
       }
     } catch (err) {
       // Corrupted payload: start clean rather than breaking the page.
@@ -152,6 +167,18 @@
     return -1;
   }
 
+  // Rows are looked up through their data-id instead of a CSS selector: ids
+  // come from storage, and a corrupted value would break the selector.
+  function findRow(id) {
+    var rows = els.list.children;
+    for (var i = 0; i < rows.length; i++) {
+      if (rows[i].dataset.id === id) {
+        return rows[i];
+      }
+    }
+    return null;
+  }
+
   /* ---------- Delete mis-click guard ----------
    * Deleting a task re-renders the list, so every row below it slides up into
    * the freed slot. Someone who double-clicks (or keeps clicking) a delete
@@ -188,6 +215,27 @@
       Math.abs(event.clientY - previous.y) <= DELETE_GUARD_PX &&
       Date.now() - previous.time < DELETE_GUARD_MS
     );
+  }
+
+  /* ---------- Screen-reader announcements ----------
+   * The list is re-rendered wholesale on every change and the visible summary
+   * only reports counts, so mirror the action itself into a polite live
+   * region; otherwise a screen reader user gets no confirmation at all.
+   */
+
+  var announceTimer = null;
+
+  function announce(message) {
+    if (!els.status) {
+      return;
+    }
+    window.clearTimeout(announceTimer);
+    // Empty the region first: replacing the text within the same tick is not
+    // reliably picked up by screen readers.
+    els.status.textContent = '';
+    announceTimer = window.setTimeout(function () {
+      els.status.textContent = message;
+    }, 60);
   }
 
   function showError(message) {
@@ -342,7 +390,7 @@
     if (!token) {
       return;
     }
-    var row = els.list.querySelector('.task[data-id="' + token.id + '"]');
+    var row = findRow(token.id);
     if (!row) {
       return;
     }
@@ -391,10 +439,11 @@
     render();
     focusRow(task.id);
     els.input.focus();
+    announce('已添加任务：' + text);
   }
 
   function focusRow(id) {
-    var row = els.list.querySelector('.task[data-id="' + id + '"]');
+    var row = findRow(id);
     if (row) {
       row.scrollIntoView({ block: 'nearest' });
     }
@@ -405,9 +454,11 @@
     if (index === -1) {
       return;
     }
-    state.tasks[index].done = !state.tasks[index].done;
+    var task = state.tasks[index];
+    task.done = !task.done;
     save();
     render();
+    announce((task.done ? '已完成：' : '已恢复未完成：') + task.text);
   }
 
   function removeTask(id) {
@@ -415,9 +466,10 @@
     if (index === -1) {
       return;
     }
-    state.tasks.splice(index, 1);
+    var removed = state.tasks.splice(index, 1)[0];
     save();
     render();
+    announce('已删除任务：' + removed.text);
   }
 
   function clearCompleted() {
@@ -443,11 +495,13 @@
   }
 
   function dropCompletedTasks() {
+    var doneCount = countBy('completed');
     state.tasks = state.tasks.filter(function (t) {
       return !t.done;
     });
     save();
     render();
+    announce('已清除 ' + doneCount + ' 条已完成的任务。');
   }
 
   function setFilter(filter) {

@@ -1,4 +1,11 @@
+/* =========================================================
+   任务清单 —— 样式
+   通过 CSS 变量实现浅色 / 深色主题，不依赖任何外部资源。
+   ========================================================= */
+
 :root {
+  color-scheme: light dark;
+
   --bg: #f4f5f7;
   --surface: #ffffff;
   --surface-soft: #f8f9fb;
@@ -75,6 +82,7 @@ body {
   padding: 0;
   overflow: hidden;
   clip: rect(0 0 0 0);
+  clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
 }
